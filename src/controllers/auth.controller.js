@@ -6,10 +6,11 @@ import {createAccessToken} from "../libs/jwt.js";
 export const register = async (req, res) => {
     const {email, password, username} = req.body;
     try {
+
+
         //Encriptación de contraseña
         const passwordHash = await bcrypt.hash(password, 10);
         //
-
         const newUser = new User({
             email,
             password: passwordHash,
