@@ -18,8 +18,7 @@ export const register = async (req, res) => {
         const userSaved = await newUser.save();
         //Uso de JsonWebToken
         const token = await createAccessToken({id: userSaved._id});
-        res.cookie("access_token", token);
-
+        res.cookie("token", token);
         res.json({
             id: userSaved._id,
             username: userSaved.username,
@@ -47,8 +46,7 @@ export const login = async (req, res) => {
 
         //Uso de JsonWebToken
         const token = await createAccessToken({id: userFound._id});
-        res.cookie("access_token", token);
-
+        res.cookie("token", token);
         res.json({
             id: userFound._id,
             username: userFound.username,
@@ -65,8 +63,21 @@ export const login = async (req, res) => {
 }
 
 export const logout = (req, res) => {
-    res.cookie('access_token', "", {
+    res.cookie('token', "", {
         expires: new Date(0)
     });
     return res.sendStatus(200)
+}
+export const profile = async (req, res) => {
+    const userFound = await User.findById(req.decoded.id)
+    if (!userFound) return res.status(400).json({message: 'User not found'});
+    return res.json({
+            id: userFound.id,
+            username: userFound.username,
+            email: userFound.email,
+            createdAt: userFound.createdAt,
+            updatedAt: userFound.updatedAt
+        }
+    )
+
 }
