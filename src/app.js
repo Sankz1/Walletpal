@@ -4,6 +4,7 @@ import express from "express";
 import morgan from "morgan";
 import authRoutes from "./routes/auth.routes.js";
 import cookieParser from "cookie-parser";
+import tasksRoutes from "./routes/tasks.routes.js";
 
 
 //inicializacion de Express
@@ -12,6 +13,6 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser())
 
-app.use("/api", authRoutes);
+app.use("/api", authRoutes, tasksRoutes);
 
 export default app;
